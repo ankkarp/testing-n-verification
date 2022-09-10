@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 
 def validate_email(inp):
-    return bool(re.fullmatch(r"[\w~!$%^&*_=+}{'?\-.]+@][a-z]+\.[a-z]+", inp.strip()))
+    return bool(re.fullmatch(r"[\w~!$%^&*_=+}{'?\-.]+@[a-z]+\.[a-z]+", inp.strip()))
 
 
 def validate_mobile_number(inp):
@@ -49,5 +49,5 @@ if args.host:
     else:
         print(f"{args.input} не может быть адресом электронной почты")
 if args.file:
-    print(args.input, "не" if validate_mobile_number(args.input) else "", "может быть названием файла", sep="")
+    print(args.input, "не" if validate_mobile_number(args.input) else " ", "может быть названием файла", sep="")
 
