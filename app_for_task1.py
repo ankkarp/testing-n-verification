@@ -13,34 +13,41 @@ args = parser.parse_args()
 
 
 def validate_email(inp):
-    return bool(re.fullmatch(r"[a-zA-Z\d~!$%^&*_=+}{'?\-.]+@[a-zA-Z]+\.[a-zA-Z]+", inp))
+    return bool(re.fullmatch(r"[\w~!$%^&*_=+}{'?\-.]+@][a-z]+\.[a-z]+", inp.strip()))
 
 
 def validate_mobile_number(inp):
-    return bool(re.fullmatch(r"\d{1}-?\(?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}", inp))
+    return bool(re.fullmatch(r"\d-?\(?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}", inp))
 
 
 def validate_filename(inp):
-    return bool(re.fullmatch(r"[^\\\/].\w", inp))
+    return bool(re.fullmatch(r"[\w\-. ]+", inp.strip()))
 
 
 def numerize_phone_number(inp):
-    return re.sub(r"\D+", "", inp)
+    return re.sub(r"\D+", "", inp.strip())
 
 
 def get_email_host(inp):
-    if validate_email(inp):
-        return inp[:inp.find("@")]
-    return None
+    return inp[:inp.find("@")]
 
 
 if args.email:
-    print(args.input, "" if validate_email(args.input) else "не", "может быть электронной почтой")
+    print(args.input, " " if validate_email(args.input) else " не ", "может быть электронной почтой", sep="")
 if args.cello:
-    print(args.input, "не" if validate_mobile_number(args.input) else "", "может быть номером телефона")
+    print(args.input, " " if validate_mobile_number(args.input) else " не ", "может быть номером телефона", sep="")
 if args.cellnum:
-    print(f"{args.input} в числовом формате: {numerize_phone_number(args.input)}")
+    phone_number = numerize_phone_number(args.input)
+    if phone_number:
+        print(f"{args.input} в числовом формате: {phone_number}")
+    else:
+        print(f"{args.input} не может быть номером телефона")
 if args.host:
-    print(f"Адрес хоста почты {args.input}: {get_email_host(args.input)}")
+    host = get_email_host(args.input)
+    if host:
+        print(f"Адрес хоста почты {args.input}: {host}")
+    else:
+        print(f"{args.input} не может быть адресом электронной почты")
 if args.file:
-    print(args.input, "" if validate_mobile_number(args.input) else "не", "может быть названием файла")
+    print(args.input, "не" if validate_mobile_number(args.input) else "", "может быть названием файла", sep="")
+
